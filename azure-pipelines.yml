@@ -1,0 +1,22 @@
+trigger:
+- main
+
+pool: Default
+
+variables:
+  azureSubscription: 'subscriptionid'
+  webAppName: 'appservicejavaapp'
+  resourceGroupName: 'appservice'
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(webAppName)'
+    resourceGroupName: '$(resourceGroupName)'
+    package: '$(Pipeline.Workspace)/s/target/*.jar'
